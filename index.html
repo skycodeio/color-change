@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>배경색 변경하기와 움직이는 공</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            transition: background-color 0.3s;
+        }
+        button {
+            padding: 20px 40px;
+            font-size: 18px;
+            cursor: pointer;
+            position: fixed;
+            bottom: 20px;
+        }
+        #ball {
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: background-color 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <div id="ball"></div>
+    <button onclick="changeColor()">클릭하세요!</button>
+
+    <script>
+        const ball = document.getElementById('ball');
+        let x = 0;
+        let y = 0;
+        let speedX = 5;
+        let speedY = 5;
+
+        function moveBall() {
+            const maxX = window.innerWidth - 50;  // 공의 크기를 뺀 최대 X 위치
+            const maxY = window.innerHeight - 50; // 공의 크기를 뺀 최대 Y 위치
+
+            // 공의 새로운 위치 계산
+            x += speedX;
+            y += speedY;
+
+            // 벽에 부딪히면 방향 바꾸기
+            if (x >= maxX || x <= 0) {
+                speedX = -speedX;
+            }
+            if (y >= maxY || y <= 0) {
+                speedY = -speedY;
+            }
+
+            // 공의 위치 업데이트
+            ball.style.left = x + 'px';
+            ball.style.top = y + 'px';
+
+            requestAnimationFrame(moveBall);
+        }
+
+        function changeColor() {
+            // 배경색 변경
+            const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16);
+            document.body.style.backgroundColor = randomColor;
+            
+            // 공의 색상도 변경
+            const ballColor = '#' + Math.floor(Math.random()*16777215).toString(16);
+            ball.style.backgroundColor = ballColor;
+            
+            // 공의 속도 변경
+            speedX = (Math.random() - 0.5) * 10;
+            speedY = (Math.random() - 0.5) * 10;
+        }
+
+        // 공 움직이기 시작
+        moveBall();
+    </script>
+</body>
+</html>
